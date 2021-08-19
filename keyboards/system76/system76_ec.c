@@ -117,7 +117,7 @@ _Static_assert(sizeof(mode_map) == MODE_LAST, "mode_map_length");
 RGB raw_rgb_data[DRIVER_LED_TOTAL];
 
 rgb_config_t layer_rgb[DYNAMIC_KEYMAP_LAYER_COUNT] = {
-    // Layer 1
+    // Layer _DF
     {
         .enable = 1,
         .mode = RGB_MATRIX_STARTUP_MODE,
@@ -128,34 +128,34 @@ rgb_config_t layer_rgb[DYNAMIC_KEYMAP_LAYER_COUNT] = {
         },
         .speed = RGB_MATRIX_STARTUP_SPD,
     },
-    // Layer 2
+    // Layer _NV
     {
         .enable = 1,
         .mode = RGB_MATRIX_CUSTOM_active_keys,
         .hsv = {
-            .h = RGB_MATRIX_STARTUP_HUE,
+            .h = 130,
             .s = RGB_MATRIX_STARTUP_SAT,
             .v = RGB_MATRIX_STARTUP_VAL,
         },
         .speed = RGB_MATRIX_STARTUP_SPD,
     },
-    // Layer 3
+    // Layer _MD
     {
         .enable = 1,
         .mode = RGB_MATRIX_CUSTOM_active_keys,
         .hsv = {
-            .h = RGB_MATRIX_STARTUP_HUE,
+            .h = 60,
             .s = RGB_MATRIX_STARTUP_SAT,
             .v = RGB_MATRIX_STARTUP_VAL,
         },
         .speed = RGB_MATRIX_STARTUP_SPD,
     },
-    // Layer 4
+    // Layer _CM
     {
         .enable = 1,
         .mode = RGB_MATRIX_CUSTOM_active_keys,
         .hsv = {
-            .h = RGB_MATRIX_STARTUP_HUE,
+            .h = 0,
             .s = RGB_MATRIX_STARTUP_SAT,
             .v = RGB_MATRIX_STARTUP_VAL,
         },
