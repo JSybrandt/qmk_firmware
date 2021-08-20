@@ -1,10 +1,10 @@
 #include QMK_KEYBOARD_H
 
-
 // Define different layers
 // The default layer is where It type most of the time.
 #define _DF 0
 // The navigation layer makes it easier for me to move between tasks.
+// Its also fast shortcuts that I use a lot.
 #define _NV 1
 // The media layer helps me control music, lights, brightness, and maybe open some apps.
 #define _MD 2
@@ -16,8 +16,15 @@ enum custom_keycodes {
   JSYBRAN = SAFE_RANGE,
   // Switch between tmux windows with one key.
   TWIN_1, TWIN_2, TWIN_3, TWIN_4, TWIN_5,
+  // HG Commands
+  HG_AMD, HG_CMT, HG_SYNC, HG_UPCH,
+  VIM_ST, VIM_WR,
 };
 
+// Some helpers to make the following line up better
+#define UNDERSC S(KC_MINS)
+#define BRACK_R S(KC_RBRC)
+#define BRACK_L S(KC_LBRC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -48,7 +55,7 @@ ________________________________________________________________________________
     KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_PGUP,
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_PGDN,
     KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,           KC_END,
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,
+    KC_LSPO, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSPC,          KC_UP,
     KC_LCTL, MO(_CM), KC_LGUI, KC_LALT, KC_SPC,  MO(_NV), KC_RALT, KC_RCTL, MO(_MD),                            KC_LEFT, KC_DOWN, KC_RGHT
   ),
 
@@ -57,8 +64,8 @@ ________________________________________________________________________________
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     KC_PSCR, _______, _______, _______, _______, _______, _______, _______, KC_HOME, _______, _______, _______, _______, _______, _______,
     _______, KC_END,  _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, _______,          _______,
-    _______, _______, KC_DEL,  _______, _______, _______, _______, _______, _______, _______, KC_FIND, _______,          KC_PGUP,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,                            KC_HOME, KC_PGDN, KC_END
+    BRACK_L, _______, KC_DEL,  _______, _______, _______, _______, _______, _______, _______, _______, BRACK_R,          KC_PGUP,
+    _______, _______, _______, _______, UNDERSC, _______, _______, _______, _______,                            KC_HOME, KC_PGDN, KC_END
   ),
 
   [_MD] = LAYOUT(
@@ -67,15 +74,15 @@ ________________________________________________________________________________
     KC_PSCR, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BRID, KC_BRIU, _______, KC_VOLD,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_MUTE,
     _______, _______, _______, _______, _______, _______, _______, _______, KC_WBAK, KC_WFWD, _______, _______,          KC_VOLU,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,                            KC_MNXT, KC_VOLD, KC_MPRV
+    _______, _______, _______, _______, _______, _______, _______, _______, _______,                            KC_MPRV, KC_VOLD, KC_MNXT
   ),
 
   [_CM] = LAYOUT(
     RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, JSYBRAN, _______, KC_SLEP, _______, _______, _______,          _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+    _______, _______, VIM_WR,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, HG_AMD,  HG_SYNC, HG_UPCH, _______, _______, _______, JSYBRAN, _______, KC_SLEP, _______, _______, _______,          _______,
+    _______, _______, _______, HG_CMT,  VIM_ST,  _______, _______, _______, _______, _______, _______, _______,          _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______,                            _______, _______, _______
   ),
 };
@@ -101,6 +108,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
       case TWIN_5:
           SEND_STRING(SS_LCTL("a")"5");
+        break;
+      case HG_AMD:
+          SEND_STRING("hg amend"SS_TAP(X_ENTER));
+        break;
+      case HG_CMT:
+          SEND_STRING("hg commit"SS_TAP(X_ENTER));
+        break;
+      case HG_UPCH:
+          SEND_STRING("hg uploadchain"SS_TAP(X_ENTER));
+        break;
+      case HG_SYNC:
+          SEND_STRING("hg sync"SS_TAP(X_ENTER));
+        break;
+      case VIM_ST:
+        SEND_STRING("vim"SS_TAP(X_ENTER));
+        break;
+      case VIM_WR:
+        SEND_STRING(":w"SS_TAP(X_ENTER));
         break;
     }
   }
