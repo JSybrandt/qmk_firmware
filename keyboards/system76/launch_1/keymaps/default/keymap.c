@@ -26,6 +26,78 @@ enum custom_keycodes {
 #define BRACK_R S(KC_RBRC)
 #define BRACK_L S(KC_LBRC)
 
+// Tap dance special keys
+enum {
+  TD_LPBB, // Left Parens Brackets Braces
+  TD_RPBB, // Right Parens Brackets Braces
+};
+
+void tap_dance_lpbb_finished(qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count % 3){
+    case 1:
+      register_code16(LSFT(KC_9));
+      break;
+    case 2:
+      register_code16(LSFT(KC_LBRC));
+      break;
+    case 0:
+      register_code16(KC_LBRC);
+      break;
+  }
+}
+
+void tap_dance_lpbb_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count % 3){
+    case 1:
+      unregister_code16(LSFT(KC_9));
+      break;
+    case 2:
+      unregister_code16(LSFT(KC_LBRC));
+      break;
+    case 0:
+      unregister_code16(KC_LBRC);
+      break;
+  }
+}
+
+void tap_dance_rpbb_finished(qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count % 3){
+    case 1:
+      register_code16(RSFT(KC_0));
+      break;
+    case 2:
+      register_code16(RSFT(KC_RBRC));
+      break;
+    case 0:
+      register_code16(KC_RBRC);
+      break;
+  }
+}
+
+void tap_dance_rpbb_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(state->count % 3){
+    case 1:
+      unregister_code16(RSFT(KC_0));
+      break;
+    case 2:
+      unregister_code16(RSFT(KC_RBRC));
+      break;
+    case 0:
+      unregister_code16(KC_RBRC);
+      break;
+  }
+}
+
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  [TD_LPBB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tap_dance_lpbb_finished, tap_dance_lpbb_reset),
+  [TD_RPBB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tap_dance_rpbb_finished, tap_dance_rpbb_reset),
+};
+
+#define LPBB TD(TD_LPBB)
+#define RPBB TD(TD_RPBB)
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Layer 0, default layer
@@ -55,23 +127,23 @@ ________________________________________________________________________________
     KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_PGUP,
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_PGDN,
     KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,           KC_END,
-    KC_LSPO, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSPC,          KC_UP,
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,
     KC_LCTL, MO(_CM), KC_LGUI, KC_LALT, KC_SPC,  MO(_NV), KC_RALT, KC_RCTL, MO(_MD),                            KC_LEFT, KC_DOWN, KC_RGHT
   ),
 
   [_NV] = LAYOUT(
     _______, TWIN_1,  TWIN_2,  TWIN_3,  TWIN_4,  TWIN_5,  _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    KC_PSCR, _______, _______, _______, _______, _______, _______, _______, KC_HOME, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, _______, _______, _______, _______, _______, _______,
     _______, KC_END,  _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, _______,          _______,
-    BRACK_L, _______, KC_DEL,  _______, _______, _______, _______, _______, _______, _______, _______, BRACK_R,          KC_PGUP,
+    LPBB,    _______, KC_DEL,  _______, _______, _______, _______, _______, _______, _______, _______, RPBB,             KC_PGUP,
     _______, _______, _______, _______, UNDERSC, _______, _______, _______, _______,                            KC_HOME, KC_PGDN, KC_END
   ),
 
   [_MD] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPLY,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_TOG, RGB_VAD, RGB_VAI, _______, KC_VOLU,
-    KC_PSCR, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BRID, KC_BRIU, _______, KC_VOLD,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BRID, KC_BRIU, _______, KC_VOLD,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_MUTE,
     _______, _______, _______, _______, _______, _______, _______, _______, KC_WBAK, KC_WFWD, _______, _______,          KC_VOLU,
     _______, _______, _______, _______, _______, _______, _______, _______, _______,                            KC_MPRV, KC_VOLD, KC_MNXT
@@ -130,4 +202,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
   return true;
+}
+
+enum combo_events {
+  PSCR,
+  GUI_PSCR,
+};
+
+// Define combos here, make sure to keep config.h updated with COMBO_COUNT
+const uint16_t PROGMEM pscr_combo[] = {KC_LGUI, KC_TAB, COMBO_END};
+const uint16_t PROGMEM gui_pscr_combo[] = {KC_LGUI, KC_LSFT, KC_TAB, COMBO_END};
+
+// List combos in this struct
+combo_t key_combos[COMBO_COUNT] = {
+  [PSCR] = COMBO(pscr_combo, KC_PSCR),
+  [GUI_PSCR] = COMBO_ACTION(gui_pscr_combo),
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  if (pressed) {
+    switch(combo_index) {
+      case GUI_PSCR:
+        tap_code16(LGUI(KC_PSCR));
+        break;
+    }
+  }
 }
