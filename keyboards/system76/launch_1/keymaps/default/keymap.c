@@ -15,7 +15,9 @@
 enum custom_keycodes {
   JSYBRAN = SAFE_RANGE,
   // Switch between tmux windows with one key.
-  TWIN_1, TWIN_2, TWIN_3, TWIN_4, TWIN_5,
+  TWIN_1, TWIN_2, TWIN_3, TWIN_4, TWIN_5, TWIN_6, TWIN_7, TWIN_8, TWIN_9,
+  // Switch between vim windows with one key
+  VIWN_1, VIWN_2, VIWN_3, VIWN_4, VIWN_5, VIWN_6, VIWN_7, VIWN_8, VIWN_9,
   // HG Commands
   HG_AMD, HG_CMT, HG_SYNC, HG_UPCH,
   VIM_ST, VIM_WR,
@@ -132,8 +134,8 @@ ________________________________________________________________________________
   ),
 
   [_NV] = LAYOUT(
-    _______, TWIN_1,  TWIN_2,  TWIN_3,  TWIN_4,  TWIN_5,  _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______, TWIN_1,  TWIN_2,  TWIN_3,  TWIN_4,  TWIN_5,  TWIN_6,  TWIN_7,  TWIN_8,  TWIN_9,  _______, _______, _______, _______, _______,
+    _______, VIWN_1,  VIWN_2,  VIWN_3,  VIWN_4,  VIWN_5,  VIWN_6,  VIWN_7,  VIWN_8,  VIWN_9,  _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, _______, _______, _______, _______, _______, _______,
     _______, KC_END,  _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______, _______,          _______,
     LPBB,    _______, KC_DEL,  _______, _______, _______, _______, _______, _______, _______, _______, RPBB,             KC_PGUP,
@@ -181,6 +183,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case TWIN_5:
           SEND_STRING(SS_LCTL("a")"5");
         break;
+      case TWIN_6:
+          SEND_STRING(SS_LCTL("a")"6");
+        break;
+      case TWIN_7:
+          SEND_STRING(SS_LCTL("a")"7");
+        break;
+      case TWIN_8:
+          SEND_STRING(SS_LCTL("a")"8");
+        break;
+      case TWIN_9:
+          SEND_STRING(SS_LCTL("a")"9");
+        break;
+      case VIWN_1:
+          SEND_STRING("1gt");
+          break;
+      case VIWN_2:
+          SEND_STRING("2gt");
+          break;
+      case VIWN_3:
+          SEND_STRING("3gt");
+          break;
+      case VIWN_4:
+          SEND_STRING("4gt");
+          break;
+      case VIWN_5:
+          SEND_STRING("5gt");
+          break;
+      case VIWN_6:
+          SEND_STRING("6gt");
+          break;
+      case VIWN_7:
+          SEND_STRING("7gt");
+          break;
+      case VIWN_8:
+          SEND_STRING("8gt");
+          break;
+      case VIWN_9:
+          SEND_STRING("9gt");
+          break;
       case HG_AMD:
           SEND_STRING("hg amend"SS_TAP(X_ENTER));
         break;
