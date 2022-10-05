@@ -1,9 +1,12 @@
 #include "dynamic_keymap.h"
 #include "tmk_core/common/eeprom.h"
 
-#include "launch_1.h"
+#include "launch_2.h"
 #include "usb_mux.h"
 #include "rgb_matrix.h"
+
+// USB hub reset on PA3
+#define GPIO_MASK_RESET_USB (1<<3)
 
 #if RGB_MATRIX_ENABLE
 // LEDs by index
@@ -221,4 +224,41 @@ void suspend_power_down_kb(void) {
 void suspend_wakeup_init_kb(void) {
     rgb_matrix_set_suspend_state(false);
     suspend_wakeup_init_user();
+}
+
+void bootloader_jump(void) {
+
+    // Disable all peripherals on AT90USB646
+    UDCON = 1;
+    USBCON = (1<<FRZCLK);  // disable USB
+    UCSR1B = 0;
+    _delay_ms(5);
+
+    EIMSK  = 0;
+    PCICR  = 0;
+    SPCR   = 0;
+    ACSR   = 0;
+    EECR   = 0;
+    ADCSRA = 0;
+    TIMSK0 = 0;
+    TIMSK1 = 0;
+    TIMSK2 = 0;
+    TIMSK3 = 0;
+    UCSR1B = 0;
+    TWCR   = 0;
+    DDRA   = GPIO_MASK_RESET_USB;
+    DDRB   = 0;
+    DDRC   = 0;
+    DDRD   = 0;
+    DDRE   = 0;
+    DDRF   = 0;
+    PORTA  = GPIO_MASK_RESET_USB;
+    PORTB  = 0;
+    PORTC  = 0;
+    PORTD  = 0;
+    PORTE  = 0;
+    PORTF  = 0;
+
+    // finally, jump to bootloader
+    asm volatile("jmp 0xFC00");
 }

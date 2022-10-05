@@ -1,15 +1,15 @@
 ## Flashing firmware:
 * Clone this repository and `cd` into the `qmk_firmware` directory.
-* After cloning, you probably need to run `make git-submodule` as well as `./util/qmk_install.sh`.
+* After cloning, you probably need to run `make git-submodule` as well as `./util/qmk_install`.
    - You may also need to install dependencies: `sudo apt install avrdude gcc-avr avr-libc`
 * To build the firmware without flashing the keyboard, use `make (keyboard name):(layout name)`
    - For example, if you want to build the `default` layout for the Launch keyboard, run:
 ```
-make system76/launch_1:default
+make system76/launch_lite_1:default
 ```
 * To flash the firmware, you'll use the same build command, but with `dfu` added to the end:
 ```
-make system76/launch_1:default:dfu
+make system76/launch_lite_1:default:dfu
 ```
    - After it builds, you will see a repeating message that says:
 ```
@@ -21,15 +21,15 @@ Next, unplug your keyboard from your computer, hold the ESC key (while the keybo
 * To flash the firmware using ISP, you will need a USBasp device, and a tag connect cable.
   - Build the firmware and bootloader with:
 ```
-make system76/launch_1:default:production
+make system76/launch_lite_1:default:production
 ```
   - Run avrdude to flash the fuses:
 ```
-avrdude -c usbasp -p atmega32u4 -U lfuse:w:0x5E:m -U hfuse:w:0xD9:m -U efuse:w:0xCB:m
+avrdude -c usbasp -p at90usb646 -U lfuse:w:0x5E:m -U hfuse:w:0xDB:m -U efuse:w:0xFB:m -U lock:w:0xFF:m
 ```
   - Run avrdude to flash the ROM:
 ```
-avrdude -c usbasp -p atmega32u4 -U flash:w:system76_launch_1_default_production.hex
+avrdude -c usbasp -p at90usb646 -U flash:w:system76_launch_lite_1_default_production.hex
 ```
 
 ## Making your own layout:
@@ -37,4 +37,4 @@ If you want to create your own layout, go to the `keymaps` directory and copy on
 
 Inside of each layout directory, there is a file called `keymap.c`. The commented out grid area in this file is a visual reference for the actual key assignments below it. When modifying a layout, modifying this visual reference first makes it easier to design a layout, as well as keeping the actual layout below it organized.
 
-Once your layout is designed, change the keycodes below to match your design. A full list of available keycodes can be found in the [QMK docs](https://docs.qmk.fm/#/keycodes). Use the shorter keycode alias to help keep these lined up (e.g. use `KC_ESC` instead of `KC_ESCAPE`).
+Once your layout is designed, change the keycodes below to match your design. A full list of available keycodes can be found in the [QMK docs](https://beta.docs.qmk.fm/reference/keycodes). Use the shorter keycode alias to help keep these lined up (e.g. use `KC_ESC` instead of `KC_ESCAPE`).
