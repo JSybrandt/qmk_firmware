@@ -94,7 +94,7 @@
 // My stuff!
 
 #define COMBO_COUNT 2  // Number of combos defined in keymap
-#define TAPPING_TERM 200 // Number of ms to allow for tap-dance
+// #define TAPPING_TERM 200 // Number of ms to allow for tap-dance
 
 
 #endif // CONFIG_H

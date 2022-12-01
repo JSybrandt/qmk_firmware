@@ -28,76 +28,8 @@ enum custom_keycodes {
 #define BRACK_R S(KC_RBRC)
 #define BRACK_L S(KC_LBRC)
 
-// Tap dance special keys
-enum {
-  TD_LPBB, // Left Parens Brackets Braces
-  TD_RPBB, // Right Parens Brackets Braces
-};
-
-void tap_dance_lpbb_finished(qk_tap_dance_state_t *state, void *user_data) {
-  switch(state->count % 3){
-    case 1:
-      register_code16(LSFT(KC_9));
-      break;
-    case 2:
-      register_code16(LSFT(KC_LBRC));
-      break;
-    case 0:
-      register_code16(KC_LBRC);
-      break;
-  }
-}
-
-void tap_dance_lpbb_reset(qk_tap_dance_state_t *state, void *user_data) {
-  switch(state->count % 3){
-    case 1:
-      unregister_code16(LSFT(KC_9));
-      break;
-    case 2:
-      unregister_code16(LSFT(KC_LBRC));
-      break;
-    case 0:
-      unregister_code16(KC_LBRC);
-      break;
-  }
-}
-
-void tap_dance_rpbb_finished(qk_tap_dance_state_t *state, void *user_data) {
-  switch(state->count % 3){
-    case 1:
-      register_code16(RSFT(KC_0));
-      break;
-    case 2:
-      register_code16(RSFT(KC_RBRC));
-      break;
-    case 0:
-      register_code16(KC_RBRC);
-      break;
-  }
-}
-
-void tap_dance_rpbb_reset(qk_tap_dance_state_t *state, void *user_data) {
-  switch(state->count % 3){
-    case 1:
-      unregister_code16(RSFT(KC_0));
-      break;
-    case 2:
-      unregister_code16(RSFT(KC_RBRC));
-      break;
-    case 0:
-      unregister_code16(KC_RBRC);
-      break;
-  }
-}
-
 // Tap Dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-  [TD_LPBB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tap_dance_lpbb_finished, tap_dance_lpbb_reset),
-  [TD_RPBB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tap_dance_rpbb_finished, tap_dance_rpbb_reset),
-};
-
-#define LPBB TD(TD_LPBB)
-#define RPBB TD(TD_RPBB)
+qk_tap_dance_action_t tap_dance_actions[] = {};
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -138,7 +70,7 @@ ________________________________________________________________________________
     _______, VIWN_1,  VIWN_2,  VIWN_3,  VIWN_4,  VIWN_5,  VIWN_6,  VIWN_7,  VIWN_8,  VIWN_9,  _______, _______, _______, _______, _______,
     _______,  VIM_Q,   VIM_W,  _______, _______, _______, _______, _______, KC_HOME, _______, _______, _______, _______, _______, _______,
     _______, KC_END,  _______, _______, _______, _______, KC_BSPC, KC_ENT,  KC_UP,   KC_DEL,  _______, _______, _______,          _______,
-    LPBB,    _______, KC_DEL,  KC_COLN, _______, _______, _______, _______, _______, _______, _______, RPBB,             KC_PGUP,
+    _______, _______, KC_DEL,  KC_COLN, _______, _______, _______, _______, _______, _______, _______, _______,             KC_PGUP,
     _______, _______, _______, _______, KC_BSPC, _______, _______, _______, _______,                            KC_HOME, KC_PGDN, KC_END
   ),
 
@@ -161,6 +93,8 @@ ________________________________________________________________________________
   ),
 };
 
+const uint8_t kIntervalMs = 15;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // These macros are all setup for on the keydown event.
   if(record->event.pressed) {
@@ -169,31 +103,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING("jsybrandt");
         break;
       case TWIN_1:
-          SEND_STRING(SS_LCTL("a")"1");
+          send_string_with_delay(SS_LCTL("a")"1", kIntervalMs);
         break;
       case TWIN_2:
-          SEND_STRING(SS_LCTL("a")"2");
+          send_string_with_delay(SS_LCTL("a")"2", kIntervalMs);
         break;
       case TWIN_3:
-          SEND_STRING(SS_LCTL("a")"3");
+          send_string_with_delay(SS_LCTL("a")"3", kIntervalMs);
         break;
       case TWIN_4:
-          SEND_STRING(SS_LCTL("a")"4");
+          send_string_with_delay(SS_LCTL("a")"4", kIntervalMs);
         break;
       case TWIN_5:
-          SEND_STRING(SS_LCTL("a")"5");
+          send_string_with_delay(SS_LCTL("a")"5", kIntervalMs);
         break;
       case TWIN_6:
-          SEND_STRING(SS_LCTL("a")"6");
+          send_string_with_delay(SS_LCTL("a")"6", kIntervalMs);
         break;
       case TWIN_7:
-          SEND_STRING(SS_LCTL("a")"7");
+          send_string_with_delay(SS_LCTL("a")"7", kIntervalMs);
         break;
       case TWIN_8:
-          SEND_STRING(SS_LCTL("a")"8");
+          send_string_with_delay(SS_LCTL("a")"8", kIntervalMs);
         break;
       case TWIN_9:
-          SEND_STRING(SS_LCTL("a")"9");
+          send_string_with_delay(SS_LCTL("a")"9", kIntervalMs);
         break;
       case VIWN_1:
           SEND_STRING("1gt");
